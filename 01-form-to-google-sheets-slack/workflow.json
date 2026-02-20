@@ -1,0 +1,165 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Contact Us",
+        "formDescription": "Lets Talk",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Message",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -288,
+        -112
+      ],
+      "id": "105597db-ba69-4b09-86d4-2f9afd41ec8e",
+      "name": "On form submission",
+      "webhookId": "1a308f2a-6f62-4b5f-bdd6-ce4f117b24bd"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "135X4k3XT2ns3i9SitRj-f1kB5W8amrNK4bUZw30G_08",
+          "mode": "list",
+          "cachedResultName": "Contact Us",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/135X4k3XT2ns3i9SitRj-f1kB5W8amrNK4bUZw30G_08/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/135X4k3XT2ns3i9SitRj-f1kB5W8amrNK4bUZw30G_08/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Email": "={{ $json.Email }}",
+            "Message": "={{ $json.Message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -80,
+        -112
+      ],
+      "id": "ebf73517-3c6e-42bf-a358-f0e56b8d6407",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZC1nV2wAFYWvqHoc",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AGYTT2VSL",
+          "mode": "id"
+        },
+        "text": "=🚀 *New Lead Captured*   👤 *Name:* {{ $json.Name }} 📧 *Email:* {{ $json.Email }} 📝 *Message:* > {{ $json.Message }}  ",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        128,
+        -112
+      ],
+      "id": "3731289a-5890-4174-9032-3fe0cd220634",
+      "name": "Send a message",
+      "webhookId": "11887344-a467-43fd-8584-1f2dd7b9eaa7",
+      "credentials": {
+        "slackApi": {
+          "id": "4r0IZylb9HczCvXa",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7cf6e6e18ce88311463fd144dbee29b516932520455afeef02b4b2664760f8ce"
+  }
+}
